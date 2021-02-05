@@ -3,6 +3,7 @@ import { Modal, Button, Input, message } from 'antd';
 import { UserOutlined, PicLeftOutlined } from '@ant-design/icons';
 import axios from 'axios'
 import './style.css'
+import { Link, withRouter } from 'react-router-dom';
 
 
 class Login extends Component{
@@ -51,10 +52,10 @@ class Login extends Component{
         })
     }
 
-    // 登录功能，输入用户名和密码之后核查是否正确
+    // button登录功能，输入用户名和密码之后核查是否正确
     checkLogin() {
         const { user, password } = this.state;
-        const url = `http://www.dell-lee.com/react/api/login.json?user=${user}&&password=${password}`
+        const url = `http://www.dell-lee.com/react/api/login.json?user=${user}&password=${password}`
         axios.get(url, {
             withCredentials: true
         })
@@ -72,7 +73,7 @@ class Login extends Component{
             })
     }
 
-    // 退出功能
+    // button退出功能
     logout() {
         axios.get('http://www.dell-lee.com/react/api/logout.json', {
             withCredentials: true
@@ -82,10 +83,13 @@ class Login extends Component{
                 if (data.logout) {
                     this.setState({
                         login: false
-                    })
+                    });
                 }
-        })
+                // 调用history.push可以实现页面的跳转
+                this.props.history.push('/');
+            })
     }
+
 
     render() {
         const { login } = this.state;
@@ -106,6 +110,14 @@ class Login extends Component{
                             登录
                         </Button>
                 }
+                <Link to="./vip">
+                    <Button
+                        type="primary"
+                        style={{marginLeft:'10px'}}
+                    >
+                        Vip
+                    </Button>
+                </Link>
                 <Modal
                     title="登录"
                     visible={this.state.modal}
@@ -131,6 +143,7 @@ class Login extends Component{
         )
     }
 
+    // 获取一下用户是登录状态还是退出状态
     componentDidMount() {
         axios.get('http://www.dell-lee.com/react/api/isLogin.json', {
             withCredentials: true
@@ -146,4 +159,5 @@ class Login extends Component{
 
 }
 
-export default Login
+export default withRouter(Login)
+// export default Login;

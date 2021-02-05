@@ -29,7 +29,6 @@ class Detail extends Component{
         axios.get('http://www.dell-lee.com/react/api/detail.json?id=' + id)
             .then((res) => {
                 const data = res.data.data
-                console.log(data);
                 this.setState(data)
             })
     }
